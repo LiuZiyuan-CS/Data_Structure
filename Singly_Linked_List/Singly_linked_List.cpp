@@ -114,7 +114,7 @@ void deleteElem(LNode **p, LNode *s)
 }
 
 /**
- * 单链表转置
+ * 单链表逆置
  * 从p节点到q节点转置
  * */
 void reverse(LNode **p, LNode **q)
@@ -126,6 +126,141 @@ void reverse(LNode **p, LNode **q)
         (*p)->next = t->next;
         t->next = (*q)->next;
         (*q)->next = t;
+    }
+}
+
+/**
+ * 取最大值
+ * */
+int getMaxElem(LNode *head)
+{
+    LNode *p, *q;               //p当前循环的节点，q表示当前找到的拥有最大值的节点
+    int max = head->next->data; //max表示当前的最大值
+    q = p = head->next;         //初始化时将p，q分别记为开始节点
+    while (p != NULL)
+    {
+        if ((p->data) > max)
+        {
+            max = p->data;
+            q = p;
+        }
+        p = p->next;
+    }
+    return max;
+}
+
+/**
+ * 取最小值,与最大值类似，原理不再赘述
+ * */
+int getMinElem(LNode *head)
+{
+    LNode *p, *q;
+    int min = head->next->data;
+    q = p = head->next;
+    while (p != NULL)
+    {
+        if ((p->data) < min)
+        {
+            min = p->data;
+            q = p;
+        }
+        p = p->next;
+    }
+    return min;
+}
+
+/**
+ * 链表的归并 （采用的尾插法）
+ * ps：A，B均是已排序好的链表，此方法无需申请新的空间，利用A或B的任一头结点作为C的头结点即可
+ * A:需要归并的链表A  
+ * B:需要归并的链表B
+ * C:归并后的新链表C
+ * 依次比较A，B两个链表的当前节点的大小，将较小的节点先放入C，当A,B其中一个链表归并结束，余下的另一条链表剩余节点直接接入C的最后一个节点即可
+ * */
+void merge(LNode *A, LNode *B, LNode **C)
+{
+    LNode *p = A->next; //p表示A链表未归并部分的第一个节点
+    LNode *q = B->next; //q表示B链表未归并部分的第一个节点
+    LNode *r;           //r表示C链表的尾结点
+    (*C) = A;
+    (*C)->next = NULL;
+    free(B);
+    r = (*C);
+    while (p!= NULL && q != NULL)   //注意不是 p->next 和 q->next 为NULL时跳出循环，是本身为空时跳出循环
+    {
+        if (p->data <= q->data)
+        {
+            r->next = p; //p节点接到C链表来
+            p = p->next; //将p移到下一个节点处
+            r = r->next; //将r移到下一个
+        }
+        else
+        {
+            r->next = q;
+            q = q->next;
+            r = r->next;
+        }
+    }
+    if(p!=NULL) //此时B链表已被归并完毕，A链表余下的部分接到C的尾部
+    {
+        r->next = p;
+    }
+    if(q!=NULL)
+    {
+        r->next = q;
+    }
+}
+
+/**
+ * 链表的归并 （采用的头插法，这样可以实现链表的逆排序）
+ * ps：A，B均是已排序好的链表，此方法无需申请新的空间，利用A或B的任一头结点作为C的头结点即可
+ * A:需要归并的链表A  
+ * B:需要归并的链表B
+ * C:归并后的新链表C
+ * 依次比较A，B两个链表的当前节点的大小，将较小的节点先放入C的开始节点，
+ * 当A,B其中一个链表归并结束，余下的另一条链表按头插法的方法插入到C链表中
+ * */
+void mergeReverse(LNode *A,LNode *B,LNode **C)
+{
+    LNode *p = A->next; //p表示A链表未归并部分的第一个节点
+    LNode *q = B->next; //q表示B链表未归并部分的第一个节点
+    LNode *s;           //s指向当前p与q中数据域较小的那个节点。
+    (*C) = A;           
+    (*C)->next = NULL;
+    free(B);
+    while(p!=NULL && q!=NULL) 
+    {
+        if(p->data<=q->data)
+        {
+            s = p;              //s指向p的当前节点结点
+            p = p->next;        //p指向p的后继节点
+            //“头插法插入s节点”
+            s->next = (*C)->next;
+            (*C)->next = s;
+        }
+        else
+        {
+            //if条件块中的相类似，不再赘述
+            s = q;
+            q = q->next;
+            s->next = (*C)->next;
+            (*C)->next = s;
+        }
+    }
+    //此处与之前的顺序归并不同，这里需要哪个链表还有剩余结点。然后将剩余结点采用头插法的形式插入到C链表中 
+    while(p!=NULL)
+    {
+        s = p;
+        p = p->next;
+        s->next = (*C)->next;
+        (*C)->next = s;
+    }
+    while(q!=NULL)
+    {
+        s = q;
+        q = q->next;
+        s->next = (*C)->next;
+        (*C)->next = s;
     }
 }
 
@@ -238,6 +373,7 @@ int main()
     getchar();
     */
 
+    /* 逆置单链表   
     LNode *head;
     int a[5] = {10, 5, 2, 8, 7};
     int arrLength = sizeof(a) / sizeof(a[0]);
@@ -262,5 +398,91 @@ int main()
         p = p->next;
     }
     getchar();
+    */
+
+    /*查找单链表的最大值和最小值
+    LNode *head;
+    int a[5] = {10, 5, 2, 8, 7};
+    int arrLength = sizeof(a) / sizeof(a[0]);
+    createLinkListH(&head, a,arrLength);
+    LNode *p = head->next;
+    while (p!= NULL)
+    {
+        printf("data: %d \n", (p->data));
+        printf("next: %d\n", (p->next));
+        p = p->next;
+    }
+    int max=getMaxElem(head);
+    printf("%d", max);
+    int min = getMinElem(head);
+    printf("\n");
+    printf("%d", min);
+    getchar();
+    */
+
+    /*
+    LNode *A;
+    LNode *B;
+    LNode *C;
+    int a[9] = {2, 6, 9, 13, 17,24,55,67,89};
+    int b[5] = {1, 4, 8, 15, 24};
+    int arrLength_a = sizeof(a) / sizeof(a[0]);
+    int arrLength_b = sizeof(b) / sizeof(b[0]);
+    createLinListR(&A, a,arrLength_a);
+    createLinListR(&B, b,arrLength_b);
+    LNode *p = A->next;
+    while (p!= NULL)
+    {
+        printf("next: %d,data: %d \n", (p->next),(p->data));
+        p = p->next;
+    }
+    p = B->next;
+    while (p!= NULL)
+    {
+        printf("next: %d,data: %d \n", (p->next),(p->data));
+        p = p->next;
+    }
+    printf("\n");
+    merge(A, B, &C);
+    p = C->next;
+    while (p!= NULL)
+    {
+        printf("next: %d,data: %d \n", (p->next),(p->data));
+        p = p->next;
+    }
+    getchar();
+    */
+
+    LNode *A;
+    LNode *B;
+    LNode *C;
+    int a[9] = {2, 6, 9, 13, 17,24,55,67,89};
+    int b[5] = {1, 4, 8, 15, 24};
+    int arrLength_a = sizeof(a) / sizeof(a[0]);
+    int arrLength_b = sizeof(b) / sizeof(b[0]);
+    createLinListR(&A, a,arrLength_a);
+    createLinListR(&B, b,arrLength_b);
+    LNode *p = A->next;
+    while (p!= NULL)
+    {
+        printf("next: %d,data: %d \n", (p->next),(p->data));
+        p = p->next;
+    }
+    p = B->next;
+    while (p!= NULL)
+    {
+        printf("next: %d,data: %d \n", (p->next),(p->data));
+        p = p->next;
+    }
+    printf("\n");
+    mergeReverse(A, B, &C);
+    p = C->next;
+    while (p!= NULL)
+    {
+        printf("next: %d,data: %d \n", (p->next),(p->data));
+        p = p->next;
+    }
+    getchar();
+
     return 0;
 }
