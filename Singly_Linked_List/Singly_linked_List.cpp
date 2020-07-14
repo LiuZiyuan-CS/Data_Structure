@@ -1,3 +1,11 @@
+/**
+ * 1、头尾插法建表
+ * 2、链表结点插入和删除
+ * 3、链表的逆置
+ * 4、取最值
+ * 5、顺序归并和逆序归并
+ * */
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct LNode
