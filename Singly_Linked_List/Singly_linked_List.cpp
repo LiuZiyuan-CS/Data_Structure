@@ -37,6 +37,7 @@ void createLinListR(LNode **head)
         r = p;
     }
 }
+
 /*
 尾插法建立单链表：通过传入数组来传入数据
 head:头结点的二级指针
@@ -71,17 +72,18 @@ void createLinkListH(LNode **head, int data[], int arrLength)
     LNode *p = NULL;
     for (int i = 0; i < arrLength; i++)
     {
-        p = (LNode *)malloc(sizeof(LNode *));
+        p = (LNode *)malloc(sizeof(LNode));
         p->next = NULL;
         p->data = data[i];
         p->next = (*head)->next;
         (*head)->next = p;
     }
 }
+
 /*头插法创建单链表：键盘传入数据*/
 void createLinkListH(LNode **head)
 {
-    (*head) = (LNode *)malloc(sizeof(LNode *));
+    (*head) = (LNode *)malloc(sizeof(LNode));
     (*head)->data = NULL;
     (*head)->next = NULL;
     LNode *p = NULL;
@@ -89,7 +91,7 @@ void createLinkListH(LNode **head)
     scanf("%d", &n);
     for (int i = 0; i < n; i++)
     {
-        p = (LNode *)malloc(sizeof(LNode *));
+        p = (LNode *)malloc(sizeof(LNode));
         p->next = NULL;
         scanf("%d", &(p->data));
         p->next = (*head)->next;
@@ -102,7 +104,6 @@ void createLinkListH(LNode **head)
 p：插入位置的前驱节点
 s：插入的节点
 */
-
 void insertElem(LNode **p, LNode *s)
 {
     s->next = (*p)->next;
@@ -317,18 +318,18 @@ int main()
     getchar();
     */
 
-    /*使用键盘输入头插法创建单链表
+    /*使用键盘输入头插法创建单链表*/
     LNode *head;
     createLinkListH(&head);
     LNode *p = head->next;
     while (p!= NULL)
     {
         printf("data: %d \n", (p->data));
-        printf("next: %d\n", (p->next));
+        printf("next: %d \n", (p->next));
         p = p->next;
     }
     getchar();
-    */
+    
 
     /*插入元素
     LNode *head;
@@ -428,7 +429,7 @@ int main()
     getchar();
     */
 
-    /*
+    /* 顺序归并
     LNode *A;
     LNode *B;
     LNode *C;
@@ -461,6 +462,7 @@ int main()
     getchar();
     */
 
+    /* 逆序归并
     LNode *A;
     LNode *B;
     LNode *C;
@@ -491,6 +493,7 @@ int main()
         p = p->next;
     }
     getchar();
-
+    */
+    getchar();
     return 0;
 }
