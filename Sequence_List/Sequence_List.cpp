@@ -175,10 +175,10 @@ void mergeArray(int a[], int aLength, int b[], int bLength, int c[])
  * 
  * */
 //这个是属于最简单的一种划分，即枢轴在顺序表的第一个且以枢轴作为比较元素进行划分，其余的方法都是从该方法衍生出来的。
-void partition(int arr[], int arrLength)
+void partition(int arr[], int length)
 {
     int temp;
-    int i = 0, j = arrLength - 1;
+    int i = 0, j = length - 1;
     temp = arr[i];
     while (i < j)
     {
@@ -196,6 +196,40 @@ void partition(int arr[], int arrLength)
             i++;
         }
         if (i < j)
+        {
+            arr[j] = arr[i];
+            j--;
+        }
+    }
+    arr[i] = temp;
+}
+//下面是万能方法：arr表示顺序表的数组，length表示顺序表长度，k表示枢轴在顺序表的位置，comp表示比较元素
+//于是代码比较简单了，只是比较元素换成了comp而已，对于大部分的顺序表划分问题都可以通过这个函数进行修改写出来
+void partition (int arr[],int length,int comp,int k)
+{
+    int temp;//用来临时存储枢轴的值
+    int i = 0, j = length - 1;//i,j分别指向顺序表的第一个和最后一个
+    temp = arr[k];
+    arr[k] = arr[0];
+    arr[0] = temp;
+    //这几步分别是将枢轴元素拿到数组的第一个
+    
+    while(i<j)
+    {
+        while(i<j&&arr[j]>=comp)
+        {
+            j--;
+        }
+        if(i<j)
+        {
+            arr[i] = arr[j];
+            i++;
+        }
+        while(i<j&&arr[i]<=comp)
+        {
+            i++;
+        }
+        if(i<j)
         {
             arr[j] = arr[i];
             j--;
