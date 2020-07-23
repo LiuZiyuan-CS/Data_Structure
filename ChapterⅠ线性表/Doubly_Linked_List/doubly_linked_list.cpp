@@ -36,7 +36,7 @@ void createDoublyLinkList(DLNode **head,int data[],int dataLength)
     }
 }
 
-//实现题目的要求：找到最大值，移动到的一个
+//实现题目的要求：找到最大值，移动到第一个
 void getMaxElemPutFirst(DLNode **head)
 {
     DLNode *p = (*head)->rlink, *q = p;
