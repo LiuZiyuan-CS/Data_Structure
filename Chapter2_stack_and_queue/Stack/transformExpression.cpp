@@ -63,7 +63,7 @@ void infixToPostFix(char infix[], char s2[], int *top2) //s2是结果栈
     }
 }
 
-//中缀转前缀
+//中缀转前缀 结果表达式不唯一
 void infixToPreFix(char infix[], int len, char s2[], int *top2)
 {
     char s1[maxSize];
